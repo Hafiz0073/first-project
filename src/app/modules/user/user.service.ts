@@ -7,6 +7,7 @@ import { Student } from '../student/student.model';
 import { TAcademicSemester } from '../academicSemester/academicsemester.Interface';
 import { AcademicSemester } from '../academicSemester/academicsemester.model';
 import { generateStudentId } from './user.utils';
+import catchAsync from '../../utils/catchAsync';
 
 const createStudenttoDB = async (password: string, payload: TStudent) => {
   //custom static method
@@ -52,6 +53,11 @@ const createStudenttoDB = async (password: string, payload: TStudent) => {
   // }
   // const result = await student.save();
 };
+const getAllUsersFromDB = async () => {
+  const result = await User.find();
+  return result;
+};
 export const userServices = {
   createStudenttoDB,
+  getAllUsersFromDB,
 };

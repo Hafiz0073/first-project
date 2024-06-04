@@ -27,5 +27,14 @@ const createStudent = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getAllUsers = catchAsync(async (req, res) => {
+  const result = await userServices.getAllUsersFromDB();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'get All users Successfully',
+    data: result,
+  });
+});
 
-export const UserController = { createStudent };
+export const UserController = { createStudent, getAllUsers };

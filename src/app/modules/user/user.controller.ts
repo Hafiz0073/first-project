@@ -9,6 +9,7 @@ const createStudent = catchAsync(async (req, res) => {
   //data body theke niye asbe
 
   const { password, student: studentData } = req.body;
+
   //zod validation
   // const zodParseData = UserValidation.parse(user);
 

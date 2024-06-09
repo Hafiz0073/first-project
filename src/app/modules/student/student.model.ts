@@ -26,56 +26,67 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
   localGuardianContact: { type: String, required: true },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel>({
-  id: { type: String, required: true, unique: true },
-  user: {
-    type: Schema.Types.ObjectId,
-    required: [true, 'user is required'],
-    unique: true,
-    ref: 'User',
-  },
-
-  name: {
-    type: nameSchema,
-    required: true,
-  },
-  gender: {
-    type: String,
-    enum: {
-      values: ['male', 'female', 'others'],
-      message: '{VALUE} is not valid',
+const studentSchema = new Schema<TStudent, StudentModel>(
+  {
+    id: { type: String, required: true, unique: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'user is required'],
+      unique: true,
+      ref: 'User',
     },
-    required: true,
+
+    name: {
+      type: nameSchema,
+      required: true,
+    },
+    gender: {
+      type: String,
+      enum: {
+        values: ['male', 'female', 'others'],
+        message: '{VALUE} is not valid',
+      },
+      required: true,
+    },
+    dateofBirth: String,
+    email: { type: String, required: true, unique: true },
+    contactNo: { type: String, required: true },
+    emergencyContactNo: {
+      type: String,
+      required: true,
+    },
+    bloodGroup: {
+      type: String,
+      enum: ['A+', 'A-', 'B+', 'A-', 'AB+', 'O+', 'O-'],
+      required: true,
+    },
+    presentAddress: { type: String, required: true },
+    permanentAddress: { type: String, required: true },
+    guardian: guardianSchema,
+    localGuardian: {
+      type: localGuardianSchema,
+      required: true,
+    },
+    profileImage: { type: String },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicDepartment',
+    },
   },
-  dateofBirth: String,
-  email: { type: String, required: true, unique: true },
-  contactNo: { type: String, required: true },
-  emergencyContactNo: {
-    type: String,
-    required: true,
+  {
+    toJSON: {
+      virtuals: true,
+    },
   },
-  bloodGroup: {
-    type: String,
-    enum: ['A+', 'A-', 'B+', 'A-', 'AB+', 'O+', 'O-'],
-    required: true,
-  },
-  presentAddress: { type: String, required: true },
-  permanentAddress: { type: String, required: true },
-  guardian: guardianSchema,
-  localGuardian: {
-    type: localGuardianSchema,
-    required: true,
-  },
-  profileImage: { type: String },
-  admissionSemester: {
-    type: Schema.Types.ObjectId,
-    ref: 'AcademicSemester',
-  },
-  isDeleted: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 //for creating a custom static method
 studentSchema.statics.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
